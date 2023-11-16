@@ -1,16 +1,22 @@
 
+import java.io.*;
+
+
 public class SensorDataProcessor {
-// Senson data and limits.
-
-    public double[][][] data;
+// Sensor data and limits.
+    public double[][][] sensorData;
     public double[][] limit;
-// constructor
 
-    public DataProcessor(double[][][] data, double[][] limit) {
-        this.data = data;
+  /**
+     * Constructor for the SensorDataProcessor class.
+     *
+     * @param sensorData  3D array representing sensor data.
+     * @param limit       2D array representing limits for the sensor data.
+     */
+    public SensorDataProcessor(double[][][] sensorData, double[][] limit) {
+        this.sensorData = sensorData;
         this.limit = limit;
     }
-// calculates average of sensor data
 
     private double average(double[] array) {
         int i = 0;
@@ -20,40 +26,39 @@ public class SensorDataProcessor {
         }
         return val / array.length;
     }
-// calculate data
 
     public void calculate(double d) {
         int i, j, k = 0;
-        double[][][] data2 = new double[data.length][data[0].length][data[0][0].length];
+        double[][][] calculatedData = new double[sensorData.length][sensorData[0].length][sensorData[0][0].length];
         BufferedWriter out;
 // Write racing stats data into a file
         try {
             out = new BufferedWriter(new FileWriter("RacingStatsData.txt"));
-            for (i = 0; i < data.length; i++) {
-                for (j = 0; j < data[0].length; j++) {
-                    for (k = 0; k < data[0][0].length; k++) {
-                        data2[i][j][k] = data[i][j][k] / d
+            for (i = 0; i < sensorData.length; i++) {
+                for (j = 0; j < sensorData[0].length; j++) {
+                    for (k = 0; k < sensorData[0][0].length; k++) {
+                        calculatedData[i][j][k] = sensorData[i][j][k] / d
                                 - Math.pow(limit[i][j], 2.0);
-                        if (average(data2[i][j]) > 10 && average(data2[i][j])
+                        if (average(calculatedData[i][j]) > 10 && average(calculatedData[i][j])
                                 < 50) {
                             break;
-                        } else if (Math.max(data[i][j][k], data2[i][j][k])
-                                > data[i][j][k]) {
+                        } else if (Math.max(sensorData[i][j][k], calculatedData[i][j][k])
+                                > sensorData[i][j][k]) {
                             break;
-                        } else if (Math.pow(Math.abs(data[i][j][k]), 3)
-                                < Math.pow(Math.abs(data2[i][j][k]), 3)
-                                && average(data[i][j]) < data2[i][j][k] && (i + 1)
+                        } else if (Math.pow(Math.abs(sensorData[i][j][k]), 3)
+                                < Math.pow(Math.abs(calculatedData[i][j][k]), 3)
+                                && average(sensorData[i][j]) < calculatedData[i][j][k] && (i + 1)
                                 * (j + 1) > 0) {
-                            data2[i][j][k] *= 2;
+                            calculatedData[i][j][k] *= 2;
                         } else {
                             continue;
                         }
                     }
                 }
             }
-            for (i = 0; i < data2.length; i++) {
-                for (j = 0; j < data2[0].length; j++) {
-                    out.write(data2[i][j] + "\t");
+            for (i = 0; i < calculatedData.length; i++) {
+                for (j = 0; j < calculatedData[0].length; j++) {
+                    out.write(calculatedData[i][j] + "\t");
                 }
             }
             out.close();
