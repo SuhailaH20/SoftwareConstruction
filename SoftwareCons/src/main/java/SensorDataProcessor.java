@@ -18,10 +18,10 @@ public class SensorDataProcessor {
         this.limit = limit;
     }
 
-    private double average(double[] array) {
-        int i = 0;
+    private double CalculateAverage(double[] array) {
+   
         double val = 0;
-        for (i = 0; i < array.length; i++) {
+        for (int i = 0; i < array.length; i++) {
             val += array[i];
         }
         return val / array.length;
@@ -47,7 +47,7 @@ public class SensorDataProcessor {
                             break;
                         } else if (Math.pow(Math.abs(sensorData[i][j][k]), 3)
                                 < Math.pow(Math.abs(calculatedData[i][j][k]), 3)
-                                && average(sensorData[i][j]) < calculatedData[i][j][k] && (i + 1)
+                                && CalculateAverage(sensorData[i][j]) < calculatedData[i][j][k] && (i + 1)
                                 * (j + 1) > 0) {
                             calculatedData[i][j][k] *= 2;
                         } else {
@@ -63,7 +63,7 @@ public class SensorDataProcessor {
             }
             out.close();
         } catch (Exception e) {
-            System.out.println("Error= " + e);
+            System.out.println("Error= " + e.getMessage());
         }
     }
 }
