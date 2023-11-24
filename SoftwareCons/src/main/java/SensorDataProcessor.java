@@ -28,15 +28,15 @@ public class SensorDataProcessor {
     }
 
     public void calculate(double d) {
-        int i, j, k = 0;
+       
         double[][][] calculatedData = new double[sensorData.length][sensorData[0].length][sensorData[0][0].length];
-        BufferedWriter out;
+      
 // Write racing stats data into a file
         try {
-            out = new BufferedWriter(new FileWriter("RacingStatsData.txt"));
-            for (i = 0; i < sensorData.length; i++) {
-                for (j = 0; j < sensorData[0].length; j++) {
-                    for (k = 0; k < sensorData[0][0].length; k++) {
+            BufferedWriter out = new BufferedWriter(new FileWriter("RacingStatsData.txt"));
+            for (int i = 0; i < sensorData.length; i++) {
+                for (int j = 0; j < sensorData[0].length; j++) {
+                    for (int k = 0; k < sensorData[0][0].length; k++) {
                         calculatedData[i][j][k] = sensorData[i][j][k] / d
                                 - Math.pow(limit[i][j], 2.0);
                         if (average(calculatedData[i][j]) > 10 && average(calculatedData[i][j])
