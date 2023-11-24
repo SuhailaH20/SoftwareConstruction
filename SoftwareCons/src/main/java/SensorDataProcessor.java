@@ -18,7 +18,7 @@ public class SensorDataProcessor {
         this.limit = limit;
     }
 
-    private double CalculateAverage(double[] array) {
+    private double calculateAverage(double[] array) {
    
         double val = 0;
         for (int i = 0; i < array.length; i++) {
@@ -47,7 +47,7 @@ public class SensorDataProcessor {
                             break;
                         } else if (Math.pow(Math.abs(sensorData[i][j][k]), 3)
                                 < Math.pow(Math.abs(calculatedData[i][j][k]), 3)
-                                && CalculateAverage(sensorData[i][j]) < calculatedData[i][j][k] && (i + 1)
+                                && calculateAverage(sensorData[i][j]) < calculatedData[i][j][k] && (i + 1)
                                 * (j + 1) > 0) {
                             calculatedData[i][j][k] *= 2;
                         } else {
