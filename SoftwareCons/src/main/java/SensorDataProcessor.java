@@ -39,7 +39,7 @@ public class SensorDataProcessor {
                     for (int k = 0; k < sensorData[0][0].length; k++) {
                         calculatedData[i][j][k] = sensorData[i][j][k] / d
                                 - Math.pow(limit[i][j], 2.0);
-                        if (average(calculatedData[i][j]) > 10 && average(calculatedData[i][j])
+                        if (calculateAverage(calculatedData[i][j]) > 10 && calculateAverage(calculatedData[i][j])
                                 < 50) {
                             break;
                         } else if (Math.max(sensorData[i][j][k], calculatedData[i][j][k])
@@ -56,8 +56,8 @@ public class SensorDataProcessor {
                     }
                 }
             }
-            for (i = 0; i < calculatedData.length; i++) {
-                for (j = 0; j < calculatedData[0].length; j++) {
+            for (int i = 0; i < calculatedData.length; i++) {
+                for (int j = 0; j < calculatedData[0].length; j++) {
                     out.write(calculatedData[i][j] + "\t");
                 }
             }
