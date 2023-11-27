@@ -1,5 +1,6 @@
 
 import java.io.*;
+import java.IOException;
 
 
 public class SensorDataProcessor {
@@ -20,27 +21,26 @@ public class SensorDataProcessor {
 
     private double calculateAverage(double[] array) {
    
-        double sum = 0, average;
+        double val = 0;
         for (int i = 0; i < array.length; i++) {
-            sum += array[i];
+            val += array[i];
         }
-        average = sum / array.length;
-        return average;
+        return val / array.length;
     }
 
-    public void calculate(double divisor) {
+    public void calculate(double d) {
        
         double[][][] calculatedData = new double[sensorData.length][sensorData[0].length][sensorData[0][0].length];
       
 // Write racing stats data into a file
         try {
-            BufferedWriter output = new BufferedWriter(new FileWriter("RacingStatsData.txt"));
+            BufferedWriter out = new BufferedWriter(new FileWriter("RacingStatsData.txt"));
             for (int i = 0; i < sensorData.length; i++) {
                 for (int j = 0; j < sensorData[0].length; j++) {
                     for (int k = 0; k < sensorData[0][0].length; k++) {
-                        calculatedData[i][j][k] = sensorData[i][j][k] / divisor
+                        calculatedData[i][j][k] = sensorData[i][j][k] / d
                                 - Math.pow(limit[i][j], 2.0);
-                        if (calculateAverage(calculatedData[i][j]) > 10 && calculateAverage(calculatedData[i][j])
+                        if (average(calculatedData[i][j]) > 10 && average(calculatedData[i][j])
                                 < 50) {
                             break;
                         } else if (Math.max(sensorData[i][j][k], calculatedData[i][j][k])
@@ -51,18 +51,20 @@ public class SensorDataProcessor {
                                 && calculateAverage(sensorData[i][j]) < calculatedData[i][j][k] && (i + 1)
                                 * (j + 1) > 0) {
                             calculatedData[i][j][k] *= 2;
+                        } else {
+                            continue;
                         }
                     }
                 }
             }
-            for (int i = 0; i < calculatedData.length; i++) {
-                for (int j = 0; j < calculatedData[0].length; j++) {
-                    output.write(calculatedData[i][j] + "\t");
+            for (i = 0; i < calculatedData.length; i++) {
+                for (j = 0; j < calculatedData[0].length; j++) {
+                    out.write(calculatedData[i][j] + "\t");
                 }
             }
-            output.close();
-        } catch (Exception e) {
-            System.out.println("Error= " + e.getMessage());
+            out.close();
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }
