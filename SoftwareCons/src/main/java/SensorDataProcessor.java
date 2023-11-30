@@ -58,7 +58,7 @@ public class SensorDataProcessor {
             }
             for (i = 0; i < calculatedData.length; i++) {
                 for (j = 0; j < calculatedData[0].length; j++) {
-                    output.write(calculatedData[i][j] + "\t");
+                    output.write(calculatedData[i][j][k] + "\t");
                 }
             }
             output.close();
